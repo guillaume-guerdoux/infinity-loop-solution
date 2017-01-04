@@ -23,6 +23,7 @@ def generate_grid(n):
 def grid_to_byte(grid):
     """Converts a grid in its byte equivalent
     for each square"""
+    # Array composition : [2⁰, 2¹, 2², 2³]
     n = len(grid)
     byte_grid = [0]*n
     for i in range(n):
