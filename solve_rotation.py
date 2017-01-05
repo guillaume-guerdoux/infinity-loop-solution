@@ -1,5 +1,6 @@
 from CentraleSupelec import CSP
 from generate import *
+from connect import *
 
 def transform_grid_in_list(grid):
 	new_grid = []
@@ -8,17 +9,29 @@ def transform_grid_in_list(grid):
 			new_grid.append(child_element)
 	return new_grid
 
+def rotate_grid(grid, rotation, n):
+	print("\n---------------------\n")
+	print("Solved Grid\n")
+	DICT_ROTATION ={(0, 0): 0, (1, 0) : 1, (1 , 1): 2, (1, 2): 4, (1, 3) : 8,
+					(3, 0): 3, (3, 1) : 6, (3, 2) : 12, (3, 3) : 9,
+					(5, 0): 5, (5, 1): 10,
+					(7, 0): 7, (7, 1): 14, (7, 2): 13, (7,3): 11,
+					(15,0): 15 }
+	for i, rotation_number in enumerate(rotation):
+		grid[int(i/n)][i%n] = DICT_ROTATION[(grid[int(i/n)][i%n], rotation_number)]
+	return grid
+
 
 # TODO : for the moment n >= 3 : do it for n=1 or n=2
 # TODO : Reduce domain for 5 briques and 0 and 15 : no rotation or just one
 def solve_by_rotation(n):
 	grid = generate_grid(n)
-	print(grid)
+	print("\n---------------------\n")
+	print("Grid to solve\n")
+	prettyprint(grid)
 	new_grid = transform_grid_in_list(grid)
-	print(new_grid)
 	N = range(n**2)
 	domain = [set(range(4)) for x in N]
-	print(domain)
 
 	# REDUCTION DU DOMAINE SELON LE TYPE DE TUILE 
 
@@ -36,7 +49,7 @@ def solve_by_rotation(n):
 	# Top side
 	for i in range(n):
 		if new_grid[i] == 15:
-			return "No solution"
+			return grid, "No solution"
 		else:
 			domain[i] = domain[i] & TOP_SIDE_CONSTRAINT_DICT[new_grid[i]]
 
@@ -44,7 +57,7 @@ def solve_by_rotation(n):
 	for i in range(n**2):
 		if i%n == 0:
 			if new_grid[i] == 15:
-				return "No solution"
+				return grid, "No solution"
 			else:
 				domain[i] = domain[i] & LEFT_SIDE_CONSTRAINT_DICT[new_grid[i]]
 
@@ -52,17 +65,16 @@ def solve_by_rotation(n):
 	for i in range(n**2):
 		if i%n == n-1:
 			if new_grid[i] == 15:
-				return "No solution"
+				return grid, "No solution"
 			else:
 				domain[i] = domain[i] & RIGHT_SIDE_CONSTRAINT_DICT[new_grid[i]]
 
 	# Bottom side
 	for i in range(n**2 - n, n**2):
 		if new_grid[i] == 15:
-			return "No solution"
+			return grid, "No solution"
 		else:
 			domain[i] = domain[i] & BOTTOM_SIDE_CONSTRAINT_DICT[new_grid[i]]
-	print("Domain: " ,domain)
 
 
 	# Create CSP 
@@ -112,10 +124,21 @@ def solve_by_rotation(n):
 			if len(bottom_side_constraint) != 0:
 				solver.addConstraint(x, x+n, bottom_side_constraint)
 
-	return solver.solve()
+	return grid, solver.solve()
 if __name__ == "__main__":
-	solution = solve_by_rotation(3)
-	count = 0
-	for sol in solution:
-		count += 1
-	print(count)
+	n=4
+	solution = solve_by_rotation(n)
+	grid = solution[0]
+	rotation = solution[1]
+	if rotation != "No solution":
+		new_grid = ""
+		for rot in rotation:
+			new_grid = rotate_grid(grid, rot, n)
+		if new_grid != "":
+			prettyprint(new_grid)
+		else:
+			print("\n---------------------\n")
+			print("No solution")
+	else:
+		print("\n---------------------\n")
+		print("No solution")
