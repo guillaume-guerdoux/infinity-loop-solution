@@ -30,6 +30,7 @@ class CSP:
         l'affectation x := u, y := v satisfait la contrainte.
         (par abus de notation x est la variable et son indice).
         """
+        print("( ", x, ", ", y, " ) : ", relation)
         self.conflict[x].append((y, relation))
         self.conflict[y].append((x, {(v,u) for (u,v) in relation}))
 
