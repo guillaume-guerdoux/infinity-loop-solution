@@ -43,3 +43,17 @@ def get_domain(byte_grid):
                 domain[i][j] = [0]
                 domain[i][j][0] = byte_grid[i][j]
     return domain
+
+
+def get_domain_adapted(domain):
+    n = len(domain)
+    final = [set() for x in range(n**2)]
+    N = range(n)
+    for i in N:
+        for j in N:
+            final[i+j*n] = set(tuple(i) for i in domain[i][j])
+    return final
+
+
+def get_domain_final(byte_grid):
+    return get_domain_adapted(get_domain(byte_grid))

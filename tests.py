@@ -18,6 +18,9 @@ print("\n---------------------\n")
 print("Conversion de la grille en bits")
 byte_grid = grid_to_byte(grid)
 print(byte_grid)
+print("Exprimé avec des tuples :")
+byte_tuple = get_byte_tuple(byte_grid)
+print(byte_tuple)
 print("\n---------------------\n")
 
 #Converting the "byte grid" back to a normal grid
@@ -38,3 +41,6 @@ print("(On a ainsi par exemple pour la première case les rotations suivantes po
 print(d[0][0])
 print("\n---------------------\n")
 
+e = get_domain_adapted(d)
+print("Domaine à mettre dans le solveur :")
+print(e)
