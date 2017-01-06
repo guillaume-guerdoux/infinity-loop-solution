@@ -1,7 +1,8 @@
 from CentraleSupelec import CSP
-from generate import *
 from connect import *
 from useful_functions import *
+import time
+from cadeau import *
 
 def solve_grid(grid):
     """The grid entered in argument must be properly formatted
@@ -31,8 +32,6 @@ def solve_grid(grid):
     for i in range(n**2-n,n**2):
         domain[i] = set(t for t in domain[i] if t[2] == 0)
 
-    print(domain)
-
     # Now that we have a domain reduced, we can work on binary constraints using a CSP object
 
     P = CSP(domain)
@@ -52,12 +51,13 @@ def solve_grid(grid):
                     b = domain[(i+1)+j*n]  # Square to the right
                     P.addConstraint(i+j*n, (i+1)+j*n, {(x, y) for x in a for y in b if x[3] == y[1]})
 
+    P.maintain_arc_consistency()
+
     count = 0
     for sol in P.solve():
         count += 1
         if count == 1:
             print("Solved grid:")
-            print(sol)
             s = [0]*n
             for i in N:
                 s[i] = [0]*n
@@ -76,10 +76,13 @@ def solve_grid(grid):
         print("The solution is not unique")
 
 
-initial_grid = generate_grid(10)
+initial_grid = grid_cadeau
 prettyprint(initial_grid)
 byte_grid = grid_to_byte(initial_grid)
 grid = get_byte_tuple(byte_grid)
 
+start_time = time.time()
 solve_grid(grid)
+end_time = time.time()
+print("Temps de résolution : " + str(end_time-start_time) + " secondes")
 
