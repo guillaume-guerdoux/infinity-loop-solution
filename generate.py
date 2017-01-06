@@ -46,6 +46,16 @@ def get_byte_tuple(byte_grid):
     return byte_tuple
 
 
+def get_byte_tuple_back(byte_tuple):
+    n = len(byte_tuple)
+    byte_grid = [0]*n
+    for i in range(n):
+        byte_grid[i] = [0]*n
+        for j in range(n):
+            byte_grid[i][j] = list(byte_tuple[i][j])
+    return byte_grid
+
+
 def byte_to_grid(byte_grid):
     """Opposite function of grid_to_byte"""
     n = len(byte_grid)

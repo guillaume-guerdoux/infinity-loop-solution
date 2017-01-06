@@ -21,6 +21,7 @@ print(byte_grid)
 print("Exprimé avec des tuples :")
 byte_tuple = get_byte_tuple(byte_grid)
 print(byte_tuple)
+print(get_byte_tuple_back(byte_tuple))
 print("\n---------------------\n")
 
 #Converting the "byte grid" back to a normal grid

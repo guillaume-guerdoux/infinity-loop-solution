@@ -1,5 +1,6 @@
 from CentraleSupelec import CSP
 from generate import *
+from connect import *
 from useful_functions import *
 
 def solve_grid(grid):
@@ -30,7 +31,6 @@ def solve_grid(grid):
     for i in range(n**2-n,n**2):
         domain[i] = set(t for t in domain[i] if t[2] == 0)
 
-    print(grid)
     print(domain)
 
     # Now that we have a domain reduced, we can work on binary constraints using a CSP object
@@ -40,21 +40,32 @@ def solve_grid(grid):
     #TODO Rajouter les contraintes unaires, j'ai mis ici que les contraintes binaires (et encore, ça plante pour le moment
     for i in N:
         for j in N:
-            a = grid[i][j] #Current square
+            a = domain[i+j*n]#Current square
             if j < n-1: #Everything that is not in the bottom line
-                c = grid[i][j + 1]  # Square below
-                P.addConstraint(a, c, {(x, y) for x in a for y in c if x[2] == y[0]})
+                c = domain[i+(j+1)*n] # Square below
+                P.addConstraint(i+j*n, i+(j+1)*n, {(x, y) for x in a for y in c if x[2] == y[0]})
                 if i < n-1: #Everyting that is not in the bottom line and the rightest column
-                    b = grid[i + 1][j] # Square to the right
-                    P.addConstraint(a, b, {(x, y) for x in a for y in b if x[3] == y[1]})
-            if j == n: #Only the bottom line
+                    b = domain[(i+1)+j*n] # Square to the right
+                    P.addConstraint(i+j*n, (i+1)+j*n, {(x, y) for x in a for y in b if x[3] == y[1]})
+            if j == n-1 : #Only the bottom line
                 if i < n-1: #Only the bottom line that is not in the bottom-right corner
-                    b = grid[i + 1][j]  # Square to the right
-                    P.addConstraint(a, b, {(x, y) for x in a for y in b if x[3] == y[1]})
+                    b = domain[(i+1)+j*n]  # Square to the right
+                    P.addConstraint(i+j*n, (i+1)+j*n, {(x, y) for x in a for y in b if x[3] == y[1]})
 
     count = 0
     for sol in P.solve():
         count += 1
+        if count == 1:
+            print("Solved grid:")
+            print(sol)
+            s = [0]*n
+            for i in N:
+                s[i] = [0]*n
+                for j in N:
+                    s[i][j] = sol[i*n+j]
+            x = get_byte_tuple_back(s)
+            y = byte_to_grid(x)
+            prettyprint(y)
 
     print("Nodes explored : %i " % P.nodes)
     if count == 0:
@@ -65,4 +76,10 @@ def solve_grid(grid):
         print("The solution is not unique")
 
 
-solve_grid(grid_to_byte(generate_grid(3)))
+initial_grid = generate_grid(10)
+prettyprint(initial_grid)
+byte_grid = grid_to_byte(initial_grid)
+grid = get_byte_tuple(byte_grid)
+
+solve_grid(grid)
+
