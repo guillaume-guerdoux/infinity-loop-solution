@@ -76,8 +76,8 @@ def solve_grid(grid):
         print("The solution is not unique, there are " + str(count) + " solutions.")
 
 
-christmas_grid = grid_gift
-initial_grid = generate_grid(5)
+initial_grid = generate_grid(4)
+#initial_grid = [[1, 3, 0, 1], [0, 3, 3, 5], [1, 3, 5, 5], [0, 3, 3, 1]]
 print("Grid to solve:\n")
 prettyprint(initial_grid)
 grid = formatting_grid(initial_grid)
