@@ -25,4 +25,4 @@ grid_gift = [0] * n
 for i in N:
     grid_gift[i] = [0] * n
     for j in N:
-        grid_gift[i][j] = int(gift[j][i])
+        grid_gift[i][j] = int(gift[i][j])

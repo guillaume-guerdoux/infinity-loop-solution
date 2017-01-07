@@ -44,14 +44,14 @@ def solve_grid(grid):
             a = domain[i+j*n]  # Current square
 
             if j < n-1:  # Everything that is not in the bottom line
-                c = domain[i+(j+1)*n] # Square below
+                c = domain[i+(j+1)*n]  # Square below
                 P.addConstraint(i+j*n, i+(j+1)*n, {(x, y) for x in a for y in c if x[2] == y[0]})
 
                 if i < n-1:  # Everything that is not in the bottom line and the rightest column
-                    b = domain[(i+1)+j*n] # Square to the right
+                    b = domain[(i+1)+j*n]  # Square to the right
                     P.addConstraint(i+j*n, (i+1)+j*n, {(x, y) for x in a for y in b if x[3] == y[1]})
 
-            if j == n-1 :  # Only the bottom line
+            if j == n-1:  # Only the bottom line
 
                 if i < n-1:  # Only the bottom line that is not in the bottom-right corner
                     b = domain[(i+1)+j*n]  # Square to the right
@@ -64,7 +64,6 @@ def solve_grid(grid):
         count += 1
         if count == 1:
             print("Solved grid:")
-            print(sol)
             s = formatting_solution(sol, n)
             prettyprint(s)
 
@@ -88,5 +87,5 @@ start_time = time.time()
 print("Resolution starting...\n")
 solve_grid(grid)
 end_time = time.time()
-print("Time to resolve: " + str(end_time-start_time) + " seconds")
+print("\nTime to resolve: " + str(end_time-start_time) + " seconds")
 

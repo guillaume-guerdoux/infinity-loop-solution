@@ -11,20 +11,15 @@ def get_domain(byte_grid):
     """Returns a list with all possible byte permutations for each square
     This may be used to get the domain of the optimization problem"""
     n = len(byte_grid)
-    grid = byte_to_grid(byte_grid)
     domain = [0]*n
     for i in range(n):
         domain[i] = [0]*n
         for j in range(n):
-            if 0 < grid[i][j] < 15:
-                domain[i][j] = [0]*4
-                temp = byte_grid[i][j]
-                for k in range(4):
-                    domain[i][j][k] = temp
-                    temp = shift(temp)
-            else:
-                domain[i][j] = [0]
-                domain[i][j][0] = byte_grid[i][j]
+            domain[i][j] = [0]*4
+            temp = byte_grid[i][j]
+            for k in range(4):
+                domain[i][j][k] = temp
+                temp = shift(temp)
     return domain
 
 
@@ -35,7 +30,7 @@ def get_domain_adapted(domain):
     N = range(n)
     for i in N:
         for j in N:
-            final[i+j*n] = set(tuple(i) for i in domain[i][j])
+            final[i*n+j] = set(tuple(i) for i in domain[i][j])
     return final
 
 
