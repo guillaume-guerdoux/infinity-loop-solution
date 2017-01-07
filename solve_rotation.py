@@ -17,7 +17,15 @@ def rotate_grid(grid, rotation, n):
 					(5, 0): 5, (5, 1): 10,
 					(7, 0): 7, (7, 1): 14, (7, 2): 13, (7,3): 11,
 					(15,0): 15 }
+	print(grid)
 	for i, rotation_number in enumerate(rotation):
+		print("new iteration")
+		print("i :", i)
+		print('rotation number :', rotation_number)
+		print('int(i/n)', int(i/n))
+		print('i%n', i%n)
+		print('grid : ', grid[int(i/n)][i%n])
+		print(i, rotation_number, grid[int(i/n)][i%n])
 		grid[int(i/n)][i%n] = DICT_ROTATION[(grid[int(i/n)][i%n], rotation_number)]
 	return grid
 
@@ -26,6 +34,8 @@ def rotate_grid(grid, rotation, n):
 # TODO : Reduce domain for 5 briques and 0 and 15 : no rotation or just one
 def solve_by_rotation(n):
 	grid = generate_grid(n)
+	#grid = [[1, 3, 0, 1], [0, 3, 3, 5], [1, 3, 5, 5], [0, 3, 3, 1]]
+	print(grid)
 	print("\n---------------------\n")
 	print("Grid to solve\n")
 	prettyprint(grid)
@@ -54,8 +64,10 @@ def solve_by_rotation(n):
 			domain[i] = domain[i] & TOP_SIDE_CONSTRAINT_DICT[new_grid[i]]
 
 	# Left side
+	print(range(n**2))
 	for i in range(n**2):
 		if i%n == 0:
+			print(i)
 			if new_grid[i] == 15:
 				return grid, "No solution"
 			else:
@@ -76,7 +88,7 @@ def solve_by_rotation(n):
 		else:
 			domain[i] = domain[i] & BOTTOM_SIDE_CONSTRAINT_DICT[new_grid[i]]
 
-
+	print("Domain : ", domain)
 	# Create CSP 
 	solver = CSP(domain)
 	# Second : Binary Constraints : use addConstraint
@@ -84,7 +96,7 @@ def solve_by_rotation(n):
 	LEFT_SIDE_CONNECTOR_PRESENT_BINARY_CONSTRAINT_DICT = {0: {}, 1: {1}, 3: {0,1}, 5: {1}, 7: {0, 1, 3}, 15: {0}}
 
 	RIGHT_SIDE_CONNECTOR_ABSENT_BINARY_CONSTRAINT_DICT = {0: {0}, 1: {0,1,2}, 3: {0,1}, 5: {0}, 7: {0}, 15: {}}
-	LEFT_SIDE_CONNECTOR_ABSENT_BINARY_CONSTRAINT_DICT = {0: {0}, 1: {0,2,3}, 3: {2, 3}, 5: {0}, 7: {0}, 15: {}}
+	LEFT_SIDE_CONNECTOR_ABSENT_BINARY_CONSTRAINT_DICT = {0: {0}, 1: {0,2,3}, 3: {2, 3}, 5: {0}, 7: {2}, 15: {}}
 
 	BOTTOM_SIDE_CONNECTOR_PRESENT_BINARY_CONSTRAINT_DICT = {0: {}, 1: {2}, 3: {1,2}, 5: {0}, 7: {0, 1, 2}, 15: {0}}
 	TOP_SIDE_CONNECTOR_PRESENT_BINARY_CONSTRAINT_DICT = {0: {}, 1: {0}, 3: {0,3}, 5: {0}, 7: {0, 2, 3}, 15: {0}}
@@ -97,14 +109,20 @@ def solve_by_rotation(n):
 		if x%n != n-1:
 			# Presence of a connecteur
 			tile_right_presence_set = RIGHT_SIDE_CONNECTOR_PRESENT_BINARY_CONSTRAINT_DICT[new_grid[x]]
+			#print(tile_right_presence_set)
 			tile_left_presence_set = LEFT_SIDE_CONNECTOR_PRESENT_BINARY_CONSTRAINT_DICT[new_grid[x+1]]
+			#print(tile_left_presence_set)
 			right_side_presence_constraint = {(u, v) for u in tile_right_presence_set for v in tile_left_presence_set}
 			# Abscence of a connecteur
 			tile_right_abscence_set = RIGHT_SIDE_CONNECTOR_ABSENT_BINARY_CONSTRAINT_DICT[new_grid[x]]
+			#print(tile_right_abscence_set)
 			title_left_abscence_set = LEFT_SIDE_CONNECTOR_ABSENT_BINARY_CONSTRAINT_DICT[new_grid[x+1]]
+			#print(title_left_abscence_set)
 			right_side_absence_constraint = {(u, v) for u in tile_right_abscence_set for v in title_left_abscence_set}
+			#print(right_side_absence_constraint)
 
 			right_side_constraint = right_side_presence_constraint | right_side_absence_constraint
+			#print(right_side_constraint)
 			if len(right_side_constraint) != 0:
 				solver.addConstraint(x, x+1, right_side_constraint)
 
@@ -124,11 +142,28 @@ def solve_by_rotation(n):
 			if len(bottom_side_constraint) != 0:
 				solver.addConstraint(x, x+n, bottom_side_constraint)
 
-	return grid, solver.solve()
+	count = 0
+	for sol in solver.solve():
+		print(sol)
+		count += 1
+		if count == 1:
+			print("Solved grid:")
+			print(sol)
+			new_grid = rotate_grid(grid, sol, n)
+			prettyprint(new_grid)
+
+	print("Nodes explored : %i " % solver.nodes)
+	if count == 0:
+		print("There is no solution.")
+	elif count == 1:
+		print("The solution is unique.")
+	else:
+		print("The solution is not unique, there are " + str(count) + " solutions.")
+
 if __name__ == "__main__":
 	n=4
 	solution = solve_by_rotation(n)
-	grid = solution[0]
+	'''grid = solution[0]
 	rotation = solution[1]
 	if rotation != "No solution":
 		new_grid = ""
@@ -141,4 +176,4 @@ if __name__ == "__main__":
 			print("No solution")
 	else:
 		print("\n---------------------\n")
-		print("No solution")
+		print("No solution")'''
