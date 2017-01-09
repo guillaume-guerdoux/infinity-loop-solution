@@ -69,7 +69,6 @@ def solve_grid(grid):
         count += 1
         if count == 1:
             print("Solved grid:")
-            print(sol)
             s = formatting_solution(sol, n)
             prettyprint(s)
 

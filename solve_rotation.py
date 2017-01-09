@@ -30,9 +30,9 @@ def rotate_grid(grid, rotation, n):
 def solve_by_rotation(grid):
     # grid = generate_grid(n)
     # grid = [[1, 3, 0, 1], [0, 3, 3, 5], [1, 3, 5, 5], [0, 3, 3, 1]]
-    print("\n---------------------\n")
-    print("Grid to solve\n")
-    prettyprint(grid)
+    # print("\n---------------------\n")
+    # print("Grid to solve\n")
+    # prettyprint(grid)
     new_grid = transform_grid_in_list(grid)
     n = len(grid)
     N = range(n**2)
