@@ -35,7 +35,7 @@ def get_domain_adapted(domain):
     N = range(n)
     for i in N:
         for j in N:
-            final[i+j*n] = set(tuple(i) for i in domain[i][j])
+            final[i*n + j] = set(tuple(i) for i in domain[i][j])
     return final
 
 
