@@ -22,6 +22,10 @@ class CSP:
         self.nodes = 0
         self.print_tree = False
         self.maintain_AC = False
+        for j in range(n):
+            for i in range(j):
+                if self.dom[i] is self.dom[j]:
+                    print("ERROR: same domain object for 2 variables")
 
     def addConstraint(self, x, y, relation):
         """Ajoute une contrainte binaire sur le couple de variables x et y.
@@ -141,4 +145,3 @@ class CSP:
             if (u, v) in relation:
                     return True
         return False
-

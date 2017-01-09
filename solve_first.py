@@ -78,7 +78,7 @@ def solve_grid(grid):
 
 
 christmas_grid = grid_gift
-initial_grid = generate_grid(5)
+initial_grid = generate_grid(4)
 print("Grid to solve:\n")
 prettyprint(initial_grid)
 grid = formatting_grid(initial_grid)
@@ -89,4 +89,3 @@ print("Resolution starting...\n")
 solve_grid(grid)
 end_time = time.time()
 print("Time to resolve: " + str(end_time-start_time) + " seconds")
-
