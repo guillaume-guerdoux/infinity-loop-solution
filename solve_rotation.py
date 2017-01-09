@@ -27,14 +27,14 @@ def rotate_grid(grid, rotation, n):
 
 # TODO : for the moment n >= 3 : do it for n=1 or n=2
 # TODO : Reduce domain for 5 briques and 0 and 15 : no rotation or just one
-def solve_by_rotation(n):
-    grid = generate_grid(n)
+def solve_by_rotation(grid):
+    # grid = generate_grid(n)
     # grid = [[1, 3, 0, 1], [0, 3, 3, 5], [1, 3, 5, 5], [0, 3, 3, 1]]
-    print(grid)
     print("\n---------------------\n")
     print("Grid to solve\n")
     prettyprint(grid)
     new_grid = transform_grid_in_list(grid)
+    n = len(grid)
     N = range(n**2)
     domain = [set(range(4)) for x in N]
 
@@ -188,7 +188,6 @@ def solve_by_rotation(n):
         count += 1
         if count == 1:
             new_grid = rotate_grid(grid, sol, n)
-            print(new_grid)
             prettyprint(new_grid)
 
     print("Nodes explored : %i " % solver.nodes)
@@ -201,19 +200,5 @@ def solve_by_rotation(n):
               str(count) + " solutions.")
 
 if __name__ == "__main__":
-    n = 5
-    solution = solve_by_rotation(n)
-    '''grid = solution[0]
-    rotation = solution[1]
-    if rotation != "No solution":
-        new_grid = ""
-        for rot in rotation:
-            new_grid = rotate_grid(grid, rot, n)
-        if new_grid != "":
-            prettyprint(new_grid)
-        else:
-            print("\n---------------------\n")
-            print("No solution")
-    else:
-        print("\n---------------------\n")
-        print("No solution")'''
+    grid = generate_grid(10)
+    solution = solve_by_rotation(grid)
