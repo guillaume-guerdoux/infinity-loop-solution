@@ -182,6 +182,7 @@ def solve_by_rotation(grid):
             # if len(bottom_side_constraint) != 0:
             solver.addConstraint(x, x+n, bottom_side_constraint)
 
+    # solver.maintain_arc_consistency()
     count = 0
     for sol in solver.solve():
         # print(sol)

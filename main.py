@@ -6,7 +6,7 @@ from useful_functions import formatting_grid
 import time
 
 '''1. Grid Generation'''
-n = 3
+n = 20
 print("1. Here is the random generated grid with n = ", n)
 initial_grid = generate_grid(n)
 prettyprint(initial_grid)

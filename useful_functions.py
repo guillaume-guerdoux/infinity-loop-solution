@@ -46,7 +46,8 @@ def get_domain_final(byte_grid):
 
 def formatting_grid(grid):
     """Formatting grid into a byte_grid to use bytes as variables in CSP
-    The tuple composition is (2⁰, 2¹, 2², 2³) refering to the side of the square"""
+    The tuple composition is (2⁰, 2¹, 2², 2³)
+    refering to the side of the square"""
     n = len(grid)
     byte_grid = [0]*n
     for i in range(n):
@@ -61,7 +62,8 @@ def formatting_grid(grid):
 
 
 def formatting_solution(sol, n):
-    """Formatting the solution obtained after CSP to be able to prettyprint it"""
+    """Formatting the solution obtained after CSP to be able to
+       prettyprint it"""
     grid = [0]*n
     for i in range(n):
         grid[i] = [0]*n
@@ -82,7 +84,8 @@ def get_domain_old(byte_grid):
     This may be used to get the domain of the optimization problem
     ___NOT IN USE ANYMORE___"""
     n = len(byte_grid)
-    permutations = [list(set(list(itertools.permutations(byte_grid[i][j])))) for i in range(n) for j in range(n)]
+    permutations = [list(set(list(itertools.permutations(byte_grid[i][j]))))
+                    for i in range(n) for j in range(n)]
     domain = [0]*n
     for i in range(n):
         domain[i] = [0]*n
@@ -93,10 +96,11 @@ def get_domain_old(byte_grid):
                 domain[i][j][k] = a[k]
     return domain
 
+
 def grid_to_byte(grid):
     """Converts a grid in its byte equivalent
     for each square"""
-    # Array composition : [2⁰, 2¹, 2², 2³]
+    # Array composition : [2⁰, 2¹, 2², 2³]
     n = len(grid)
     byte_grid = [0]*n
     for i in range(n):
