@@ -8,7 +8,7 @@ from cadeau import *
 
 def solve_grid(grid):
     """The grid entered in argument must be properly formatted
-    As of now, we are solving the problem with 'byte_tuple' grids (cf useful_functions.py)"""
+    As of now, we are solving the problem with 'byte_tuple' grids"""
     n = len(grid)
     N = range(n)
 
@@ -31,10 +31,10 @@ def solve_grid(grid):
             domain[i] = set(t for t in domain[i] if t[3] == 0)
 
     # Bottom side
-    for i in range(n**2-n,n**2):
+    for i in range(n**2-n, n**2):
         domain[i] = set(t for t in domain[i] if t[2] == 0)
 
-    # Now that we have a domain reduced, we can work on binary constraints using a CSP object
+    # Now that we have a domain reduced, we can work on binary constraints
 
     P = CSP(domain)
 
@@ -45,17 +45,21 @@ def solve_grid(grid):
 
             if j < n-1:  # Everything that is not in the bottom line
                 c = domain[i+(j+1)*n]  # Square below
-                P.addConstraint(i+j*n, i+(j+1)*n, {(x, y) for x in a for y in c if x[2] == y[0]})
+                P.addConstraint(i+j*n, i+(j+1)*n,
+                                {(x, y) for x in a for y in c if x[2] == y[0]})
 
-                if i < n-1:  # Everything that is not in the bottom line and the rightest column
+                if i < n-1:  # Not in the bottom line and the rightest column
                     b = domain[(i+1)+j*n]  # Square to the right
-                    P.addConstraint(i+j*n, (i+1)+j*n, {(x, y) for x in a for y in b if x[3] == y[1]})
-
+                    P.addConstraint(i+j*n, (i+1)+j*n, {(x, y) for x in a
+                                                       for y in b if x[3] ==
+                                                                y[1]})
             if j == n-1:  # Only the bottom line
 
-                if i < n-1:  # Only the bottom line that is not in the bottom-right corner
+                if i < n-1:  # Bottom line not in the bottom-right corner
                     b = domain[(i+1)+j*n]  # Square to the right
-                    P.addConstraint(i+j*n, (i+1)+j*n, {(x, y) for x in a for y in b if x[3] == y[1]})
+                    P.addConstraint(i+j*n, (i+1)+j*n, {(x, y) for x in a
+                                                       for y in b if x[3] ==
+                                                                y[1]})
 
     # P.maintain_arc_consistency()
 
@@ -73,19 +77,19 @@ def solve_grid(grid):
     elif count == 1:
         print("The solution is unique.")
     else:
-        print("The solution is not unique, there are " + str(count) + " solutions.")
+        print("The solution is not unique, there are " + str(count) +
+              " solutions.")
 
+if __name__ == "__main__":
+    christmas_grid = grid_gift
+    initial_grid = generate_grid(4)
+    print("Grid to solve:\n")
+    prettyprint(initial_grid)
+    grid = formatting_grid(initial_grid)
+    print("---------------------------------\n")
 
-initial_grid = generate_grid(4)
-#initial_grid = [[1, 3, 0, 1], [0, 3, 3, 5], [1, 3, 5, 5], [0, 3, 3, 1]]
-print("Grid to solve:\n")
-prettyprint(initial_grid)
-grid = formatting_grid(initial_grid)
-print("---------------------------------\n")
-
-start_time = time.time()
-print("Resolution starting...\n")
-solve_grid(grid)
-end_time = time.time()
-print("\nTime to resolve: " + str(end_time-start_time) + " seconds")
-
+    start_time = time.time()
+    print("Resolution starting...\n")
+    solve_grid(grid)
+    end_time = time.time()
+    print("Time to resolve: " + str(end_time-start_time) + " seconds")

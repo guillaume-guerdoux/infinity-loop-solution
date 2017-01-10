@@ -9,7 +9,7 @@ The group is formed by Guillaume Guerdoux and Paul de Nonancourt. We used Python
 
 The problem considered is the one related to the game Infinity Loop. In this game, the user may rotate different kinds of square and has to solve a grid with the following rules: each square has to be connected to others and no branch should be left with nothing at the end.
 
-This is considered as a Constraint satisfaction problem (CSP) and solved as so by using the solver in CentraleSupelec.py written by teacher Christophe Durr.
+This is considered as a Constraint satisfaction problem (CSP) and solved as so by using the solver in CentraleSupelec.py written by teacher Christophe Dürr.
 
 ### solve_first.py
 
