@@ -12,8 +12,6 @@ def transform_grid_in_list(grid):
 
 
 def rotate_grid(grid, rotation, n):
-    print("\n---------------------\n")
-    print("Solved Grid\n")
     DICT_ROTATION = {(0, 0): 0, (1, 0): 1, (1, 1): 2, (1, 2): 4, (1, 3): 8,
                      (3, 0): 3, (3, 1): 6, (3, 2): 12, (3, 3): 9,
                      (5, 0): 5, (5, 1): 10,
@@ -25,14 +23,7 @@ def rotate_grid(grid, rotation, n):
     return grid
 
 
-# TODO : for the moment n >= 3 : do it for n=1 or n=2
-# TODO : Reduce domain for 5 briques and 0 and 15 : no rotation or just one
-def solve_by_rotation(grid):
-    # grid = generate_grid(n)
-    # grid = [[1, 3, 0, 1], [0, 3, 3, 5], [1, 3, 5, 5], [0, 3, 3, 1]]
-    # print("\n---------------------\n")
-    # print("Grid to solve\n")
-    # prettyprint(grid)
+def solve_by_rotation(grid, arc_consistency=False, print_results=True):
     new_grid = transform_grid_in_list(grid)
     n = len(grid)
     N = range(n**2)
@@ -47,43 +38,31 @@ def solve_by_rotation(grid):
 
     # First : Contrainte unaire : work on N
     TOP_SIDE_CONSTRAINT_DICT = {0: {0}, 1: {1, 2, 3}, 3: {1, 2}, 5: {1},
-                                7: {1}}
+                                7: {1}, 15: {}}
     LEFT_SIDE_CONSTRAINT_DICT = {0: {0}, 1: {0, 2, 3}, 3: {2, 3}, 5: {0},
-                                 7: {2}}
+                                 7: {2}, 15: {}}
     RIGHT_SIDE_CONSTRAINT_DICT = {0: {0}, 1: {0, 1, 2}, 3: {0, 1}, 5: {0},
-                                  7: {0}}
+                                  7: {0}, 15: {}}
     BOTTOM_SIDE_CONSTRAINT_DICT = {0: {0}, 1: {0, 1, 3}, 3: {0, 3}, 5: {1},
-                                   7: {3}}
+                                   7: {3}, 15: {}}
 
     # Top side
     for i in range(n):
-        if new_grid[i] == 15:
-            return grid, "No solution"
-        else:
-            domain[i] = domain[i] & TOP_SIDE_CONSTRAINT_DICT[new_grid[i]]
+        domain[i] = domain[i] & TOP_SIDE_CONSTRAINT_DICT[new_grid[i]]
 
     # Left side
     for i in range(n**2):
         if i % n == 0:
-            if new_grid[i] == 15:
-                return grid, "No solution"
-            else:
-                domain[i] = domain[i] & LEFT_SIDE_CONSTRAINT_DICT[new_grid[i]]
+            domain[i] = domain[i] & LEFT_SIDE_CONSTRAINT_DICT[new_grid[i]]
 
     # Left side
     for i in range(n**2):
         if i % n == n-1:
-            if new_grid[i] == 15:
-                return grid, "No solution"
-            else:
-                domain[i] = domain[i] & RIGHT_SIDE_CONSTRAINT_DICT[new_grid[i]]
+            domain[i] = domain[i] & RIGHT_SIDE_CONSTRAINT_DICT[new_grid[i]]
 
     # Bottom side
     for i in range(n**2 - n, n**2):
-        if new_grid[i] == 15:
-            return grid, "No solution"
-        else:
-            domain[i] = domain[i] & BOTTOM_SIDE_CONSTRAINT_DICT[new_grid[i]]
+        domain[i] = domain[i] & BOTTOM_SIDE_CONSTRAINT_DICT[new_grid[i]]
 
     # Create CSP
     solver = CSP(domain)
@@ -189,17 +168,20 @@ def solve_by_rotation(grid):
         count += 1
         if count == 1:
             new_grid = rotate_grid(grid, sol, n)
-            prettyprint(new_grid)
-
-    print("Nodes explored : %i " % solver.nodes)
-    if count == 0:
-        print("There is no solution.")
-    elif count == 1:
-        print("The solution is unique.")
-    else:
-        print("The solution is not unique, there are " +
-              str(count) + " solutions.")
+            if print_results:
+                print("\n---------------------\n")
+                print("Solved Grid\n")
+                prettyprint(new_grid)
+    if print_results:
+        print("Nodes explored : %i " % solver.nodes)
+        if count == 0:
+            print("There is no solution.")
+        elif count == 1:
+            print("The solution is unique.")
+        else:
+            print("The solution is not unique, there are " +
+                  str(count) + " solutions.")
 
 if __name__ == "__main__":
-    grid = generate_grid(10)
+    grid = generate_grid(30)
     solution = solve_by_rotation(grid)

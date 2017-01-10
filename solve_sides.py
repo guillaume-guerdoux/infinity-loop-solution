@@ -6,7 +6,7 @@ from generate import *
 from cadeau import *
 
 
-def solve_grid(grid):
+def solve_sides(grid, arc_consistency=False, print_results=True):
     """The grid entered in argument must be properly formatted
     As of now, we are solving the problem with 'byte_tuple' grids"""
     n = len(grid)
@@ -66,19 +66,19 @@ def solve_grid(grid):
     count = 0
     for sol in P.solve():
         count += 1
-        if count == 1:
+        if count == 1 and print_results:
             print("Solved grid:")
             s = formatting_solution(sol, n)
             prettyprint(s)
-
-    print("Nodes explored : %i " % P.nodes)
-    if count == 0:
-        print("There is no solution.")
-    elif count == 1:
-        print("The solution is unique.")
-    else:
-        print("The solution is not unique, there are " + str(count) +
-              " solutions.")
+    if print_results:
+        print("Nodes explored : %i " % P.nodes)
+        if count == 0:
+            print("There is no solution.")
+        elif count == 1:
+            print("The solution is unique.")
+        else:
+            print("The solution is not unique, there are " + str(count) +
+                  " solutions.")
 
 if __name__ == "__main__":
     christmas_grid = grid_gift
@@ -90,6 +90,6 @@ if __name__ == "__main__":
 
     start_time = time.time()
     print("Resolution starting...\n")
-    solve_grid(grid)
+    solve_sides(grid)
     end_time = time.time()
     print("Time to resolve: " + str(end_time-start_time) + " seconds")
