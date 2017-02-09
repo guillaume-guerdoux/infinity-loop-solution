@@ -183,6 +183,6 @@ def solve_by_rotation(grid, arc_consistency=False, print_results=True):
                   str(count) + " solutions.")
 
 if __name__ == "__main__":
-    grid = generate_grid(4)
+    grid = generate_grid(20)
     print(prettyprint(grid))
     solution = solve_by_rotation(grid)

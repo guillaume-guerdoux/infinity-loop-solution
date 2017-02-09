@@ -72,5 +72,4 @@ We go through all tiles from left to right and from top to bottom. We noticed th
 Such program needs some grid formatting and that's why we have functions in useful_functions.py transforming grids to lists and lists to grid
 ## Useful links
 
-Problem: http://www-desir.lip6.fr/~durrc/Iut/optim/t/dm1-connect
 Game associated: https://play.google.com/store/apps/details?id=com.balysv.loop&hl=fr
