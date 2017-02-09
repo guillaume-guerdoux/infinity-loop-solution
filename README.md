@@ -1,4 +1,4 @@
-# Optimization - Assignment n°1
+# Optimization - Infinity Loop
 
 ## Introduction
 

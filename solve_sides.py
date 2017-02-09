@@ -3,7 +3,6 @@ from connect import *
 from useful_functions import *
 import time
 from generate import *
-from cadeau import *
 
 
 def solve_sides(grid, arc_consistency=False, print_results=True):
@@ -81,7 +80,6 @@ def solve_sides(grid, arc_consistency=False, print_results=True):
                   " solutions.")
 
 if __name__ == "__main__":
-    christmas_grid = grid_gift
     initial_grid = generate_grid(4)
     print("Grid to solve:\n")
     prettyprint(initial_grid)
